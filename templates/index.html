@@ -1,0 +1,19 @@
+{% extends "main.html" %}
+{% block content %}
+<div class="container">
+    <div class="row"> 
+          {% for item,img,dis in combin%}
+          <div class="col-md-4 mt-5 ml-5 mr-5">
+            <div class="card" >
+                <img src="{{img}}" class="card-img-top img-fluid" alt="Image not loaded properly" style="height:23rem;">
+                <div class="card-body">
+                  <h5 class="card-title">{{item}}</h5>
+                  <p class="card-text">{{dis}}</p>
+                  <a href="#" class="btn btn-primary">BUY</a>
+                </div>
+              </div>
+            </div>
+              {% endfor %}        
+            </div>
+        </div>
+{% endblock %}
