@@ -71,6 +71,11 @@ def contact():
     return render_template("contact.html")
 
 
+@app.route("/checkout/<product>")
+def checkout(product):
+    return render_template("checkout.html",product=product)
+
+
 @app.route("/login",methods=['GET','POST'])
 def login():
     if request.method == "POST":
