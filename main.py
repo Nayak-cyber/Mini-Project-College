@@ -71,9 +71,10 @@ def contact():
     return render_template("contact.html")
 
 
-@app.route("/checkout/<product>")
+@app.route("/checkout/<product>/")
 def checkout(product):
     return render_template("checkout.html",product=product)
+
 
 
 @app.route("/login",methods=['GET','POST'])
@@ -90,6 +91,10 @@ def login():
 @app.route("/thanks")
 def feed():
     return render_template("thanks_feed.html")
+
+@app.route("/thanksbye")
+def bought():
+    return render_template("bought.html")
 
 
 
