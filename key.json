@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "proven-agility-295317",
+  "private_key_id": "e25cccafb856f7053e3acbea4cd28031e2494960",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCsbPwFNEpYhCB9\nEQEbkRcCtN94jEQruCcaBmJhDswPHFi6JuIbc5ffpCR0otHZH7nki3KCrDb3/KVZ\nr9lsctU7j7xuYg5YdY2VTeCTY7M7xiF0reMHPm17hG5Vynad5wPFxpcHpo2zJlNd\nIjbQ92Z7FuUcRFIawNm8pXHgjXFU2NZ0ZgQKyueoLLuUToMYEC7TP7OFg/yfp9hJ\nPrfl6GzqSe81i5lOEnWbwWwgBt42nrBgaQ0ABX4dMRILUYIQp/J14JesfaLgBxX2\n7WkNTGYNtt5kmUpsMTaOARrzck5d8KfJqzAU8xfrjJL5cguFt4t9ZqYhHzEOESsP\nuPfSCXZFAgMBAAECggEACF17NpdsWfIDD35BMwCtgJyc0ODhN8vF3d3cbQAGR19l\nMJbNVm6buiZg/GWfz6xZ3OwlAJDxU8Omk/zTjA7gKHUXO7W3I3SEi29NS2lFW0uH\n+PysrH/LWPg6UCAz9AIurSwuzJi4fC4KUlTkGuw9xQ/9yorH/vNHPP870JycGHUe\nJcaGLurv46gJAHwBoyzK3tBK7kFSbr3yrQcMc8ksuixoayxO7+FbTkMw3f3xlRIE\nTzxlt4ZIumsYDQxWQbbnNKcAk7pcjYbkQwyVtBUhamERu2O0tQTJ4ORCwIBNZCMG\nTabCzmT6uw0naPHQhH2zZFU03aX5jUMhMkjNOlWVOwKBgQDpyukX39HG+/MNHj5S\nKa7Pe8L1lxQNly2xMkFc6WqgRQbL9P74hasp/+Ss/rotCSYeUIbp8FBjvMuxuf+H\n8+/l86g5oXmfiEnterDWtf7nY+DQBONTeZRrvCVK2BPbE7zW/mP84+/UNUhQ2+Vk\nq3pieDv2Dz0HZXSdOkXsgTY6NwKBgQC8zdO4za+Xi/wdSiQmNT1rIPcGl9J4TrJR\nr0RpiGCcgmNWK//gqCxsXoJwDIBglIXyIyZ1WtQfHFWOru3KcVQDsA6kRke+l1nR\nksDMa3Htp1dlVZIgmLeII16juLuTVw0sPu8ULiv0ha9EUlmG++B+99VdgzjnA0H6\nImwzChElYwKBgACHKMeZBcxBPWdGLjXZSj/Fs8cCNFVjhgLkbilbjZYXEdDcGMdO\n5fgOT+HkIV+AqclfvS5CEKxo/LzGAsG3107ZogOfTbsCf8g9grC5cH3tR9CwciL6\nH0+u+RaWLlVMUhzaLjef/CaqiCNGm9oCWSBnzRrdJfIiVIUWYJoMIKc5AoGAIwUa\njGC6fSWd8eDaq6ucZM6Mg1CN3XrbYINd8SU2plEZE9a9c3I+KyusjhQDi+aAodUb\nQRFD3zFmPTz9Jlu29agmTxoqHJP+OP07fa9ARpCPiWBB5oHtKPdGip+tSzsOWnKh\n7eBSjtxtEgMkUAFQNrzJerroRxE3n6na3+yyGXkCgYEAs18suFg/0/848cwZqxVL\nUmXE/9sfR3Mfkdrw12+uKq+CHAh0vloG8ZYsHLM8ZxwRqXtOhupmrzin8M5vtA9y\nXOtnChbBG8Y3ry+jznljmuNzHePiaLnyXq1M5k33FCgrWpxB0NcMe4QxtuPXsCu6\n9qoz4U8mJ/AzvFg6rAQss20=\n-----END PRIVATE KEY-----\n",
+  "client_email": "mini-project-college@proven-agility-295317.iam.gserviceaccount.com",
+  "client_id": "106149055113567874333",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/mini-project-college%40proven-agility-295317.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

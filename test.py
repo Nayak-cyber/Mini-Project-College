@@ -98,10 +98,34 @@
 #     print(i)
 
 
-import requests
+# import requests
 
-r = requests.get('https://serpapi.com/search.json?engine=google&q=Coffee', auth=('user', 'pass'))
+# r = requests.get('https://serpapi.com/search.json?engine=google&q=Coffee', auth=('user', 'pass'))
 
-file=r.json()
-print(file)
+# file=r.json()
+# print(file)
+
+import gspread
+
+# Authenticate using the service account
+client = gspread.service_account(filename="key.json")
+
+# Open the spreadsheet by name
+spreadsheet = client.open("Mini Project Contact Form")
+
+# Select the first sheet (worksheet)
+worksheet = spreadsheet.sheet1  # Or use .worksheet("Sheet1") if you know the sheet's name
+
+# Define the three variables you want to write
+var1 = "Value1"
+var2 = "Value2"
+var3 = "Value3"
+
+# Find the next empty row
+next_row = len(worksheet.get_all_values()) + 1
+
+# Update the next row with the three variables
+worksheet.update(f'A{next_row}:C{next_row}', [[var1, var2, var3]])
+
+print(f"Values written to row {next_row}: {var1}, {var2}, {var3}")
 

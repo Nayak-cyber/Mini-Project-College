@@ -1,13 +1,26 @@
 from flask import Flask,render_template,request,url_for,redirect
 from serpapi import GoogleSearch
+import gspread
 item=["Blue Shirt","Red Shirt","Black Pants","Watch"]
 
 app = Flask(__name__)
+
+def update_google_sheet(name, email, message):
+    client = gspread.service_account(filename="key.json")
+    sheet = client.open("Mini Project Contact Form").sheet1  # Open the first sheet
+
+    # Find the next available row
+    next_row = len(sheet.get_all_values()) + 1
+
+    # Update the sheet with new data
+    sheet.update(f'A{next_row}:C{next_row}', [[name, email, message]])
 
 
 web_name="Shopsmart"
 
 dis=[]
+
+
 
 def get_title(ite):
     params = {
@@ -85,6 +98,7 @@ def login():
        text=request.form.get("text")
        message=request.form.get("message")
        print(text+"\n"+email+"\n"+message)
+       update_google_sheet(email,text,message)
        return redirect("/thanks")
     return render_template("contact.html")
 
@@ -96,6 +110,9 @@ def feed():
 def bought():
     return render_template("bought.html")
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 
 def contact():
