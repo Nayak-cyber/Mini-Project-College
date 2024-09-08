@@ -1,9 +1,25 @@
-from flask import Flask,render_template,request,url_for,redirect
+from flask import Flask,render_template,request,url_for,redirect,Response
 from serpapi import GoogleSearch
 import gspread
+import cv2
+
 item=["Blue Shirt","Red Shirt","Black Pants","Watch"]
 
+
 app = Flask(__name__)
+
+camera = cv2.VideoCapture(0)
+
+def generate_frames():
+    while True:
+        success, frame = camera.read()
+        if not success:
+            break
+        else:
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 def update_google_sheet(name, email, message):
     client = gspread.service_account(filename="key.json")
@@ -83,6 +99,16 @@ def index():
 def contact():
     return render_template("contact.html")
 
+
+@app.route("/admin")
+def webcam():
+    return render_template("webcam.html")
+
+@app.route('/video_feed')
+def video_feed():
+    # Returns the generated frames as a video stream
+    return Response(generate_frames(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route("/checkout/<product>/")
 def checkout(product):

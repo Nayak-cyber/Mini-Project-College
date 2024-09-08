@@ -1,0 +1,11 @@
+{% extends "main.html" %}
+{% block webcam %}
+<div class="container text-center mt-4">
+    <h2 class="mb-4">Live Webcam Stream</h2>
+    <div class="card mx-auto shadow" style="max-width: 800px;">
+        <div class="card-body">
+            <img id="webcam" class="img-fluid rounded" src="{{ url_for('video_feed') }}" alt="Webcam Feed">
+        </div>
+    </div>
+</div>
+{% endblock webcam %}

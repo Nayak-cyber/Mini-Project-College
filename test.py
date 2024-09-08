@@ -105,27 +105,63 @@
 # file=r.json()
 # print(file)
 
-import gspread
+# import gspread
 
-# Authenticate using the service account
-client = gspread.service_account(filename="key.json")
+# # Authenticate using the service account
+# client = gspread.service_account(filename="key.json")
 
-# Open the spreadsheet by name
-spreadsheet = client.open("Mini Project Contact Form")
+# # Open the spreadsheet by name
+# spreadsheet = client.open("Mini Project Contact Form")
 
-# Select the first sheet (worksheet)
-worksheet = spreadsheet.sheet1  # Or use .worksheet("Sheet1") if you know the sheet's name
+# # Select the first sheet (worksheet)
+# worksheet = spreadsheet.sheet1  # Or use .worksheet("Sheet1") if you know the sheet's name
 
-# Define the three variables you want to write
-var1 = "Value1"
-var2 = "Value2"
-var3 = "Value3"
+# # Define the three variables you want to write
+# var1 = "Value1"
+# var2 = "Value2"
+# var3 = "Value3"
 
-# Find the next empty row
-next_row = len(worksheet.get_all_values()) + 1
+# # Find the next empty row
+# next_row = len(worksheet.get_all_values()) + 1
 
-# Update the next row with the three variables
-worksheet.update(f'A{next_row}:C{next_row}', [[var1, var2, var3]])
+# # Update the next row with the three variables
+# worksheet.update(f'A{next_row}:C{next_row}', [[var1, var2, var3]])
 
-print(f"Values written to row {next_row}: {var1}, {var2}, {var3}")
+# print(f"Values written to row {next_row}: {var1}, {var2}, {var3}")
+# app.py
+from flask import Flask, Response, render_template
+import cv2
+
+app = Flask(__name__)
+
+# Initialize the webcam
+camera = cv2.VideoCapture(0)  # 0 is the default camera
+
+def generate_frames():
+    while True:
+        # Capture frame-by-frame
+        success, frame = camera.read()
+        if not success:
+            break
+        else:
+            # Encode the frame in JPEG format
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+
+            # Concatenate frame one by one and show result
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+@app.route('/')
+def index():
+    return render_template('test.html')
+
+@app.route('/video_feed')
+def video_feed():
+    # Returns the generated frames as a video stream
+    return Response(generate_frames(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
