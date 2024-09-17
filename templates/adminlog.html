@@ -1,0 +1,18 @@
+{% extends "main.html" %}
+{% block adminlog %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h1 class="card-title text-center mb-4">Real-Time Face Recognition</h1>
+                    <div class="video-container">
+                        <img src="{{ url_for('face_recog') }}" alt="Video Feed" class="img-fluid border border-primary rounded shadow-lg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock adminlog %}
