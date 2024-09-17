@@ -67,26 +67,37 @@ def fetch_image(query):
 
 one_image_per_query = {}
 
-for query in item:
-    # print(f"Fetching image for: {query}")
-    one_image_per_query[query] = fetch_image(query)
-    dis.append(get_title(query))
+# for query in item:
+#     # print(f"Fetching image for: {query}")
+#     one_image_per_query[query] = fetch_image(query)
+#     dis.append(get_title(query))
 
-img_url=[]
+# img_url=[]
 
-# Print the collected image URLs
-for query, image_url in one_image_per_query.items():
-    if image_url:
-        img_url.append(image_url)
-        # print(f"\nImage for query '{query}': {image_url}")
-    else:
-        print(f"\nNo image found for query '{query}'")
+# # Print the collected image URLs
+# for query, image_url in one_image_per_query.items():
+#     if image_url:
+#         img_url.append(image_url)
+#         # print(f"\nImage for query '{query}': {image_url}")
+#     else:
+#         print(f"\nNo image found for query '{query}'")
 
 # @app.route("/")
 # def hello_world():
 # #     return render_template("index.html",web_name=web_name)
 # print("It worked correctly")
 # print(image_url[1])
+# https://rukminim2.flixcart.com/image/850/1000/xif0q/shirt/y/s/9/xxl-sh-55-getchi-original-imahfft2hpfenkx8.jpeg?q=90&crop=false
+
+img_url=["https://rukminim2.flixcart.com/image/850/1000/xif0q/shirt/y/s/9/xxl-sh-55-getchi-original-imahfft2hpfenkx8.jpeg?q=90&crop=false",
+         "https://rukminim2.flixcart.com/image/850/1000/shirt/h/w/h/12001red-english-navy-42-original-imaezh48h3gfnczr.jpeg?q=20&crop=false",
+         "https://www.beyours.in/cdn/shop/files/eveeryday-pant--black-1.jpg?v=1688369505",
+         "https://m.media-amazon.com/images/I/6166QQmf+YL._AC_UY1000_.jpg"]
+
+dis=["Stylish blue shirt with a modern fit for casual wear.",
+     "Bold red shirt, perfect for making a statement.",
+     "Sleek black pants offering comfort and versatility for any occasion.",
+     "Elegant wristwatch featuring a minimalist design for everyday use."]
 
 @app.route("/")
 def index():
