@@ -1,156 +1,79 @@
-# from serpapi import GoogleSearch
-
-# # Define your list of search queries
-# search_queries = ["Red Shirt", "Blue Jeans", "Black Shoes"]
-
-# # Define a function to fetch one image for a given query
-# def fetch_image(query):
-#     params = {
-#         "engine": "google_images",
-#         "q": query,
-#         "location": "Austin, TX, Texas, United States",
-#         "api_key": "f920b8404f9a0de2279ac3d8097f9c87af3b632cae57c969cd5043aa701a63c2"
-#     }
-#     search = GoogleSearch(params)
-#     results = search.get_dict()
-    
-#     # Extract the URL of the first image
-#     if "images_results" in results and len(results["images_results"]) > 0:
-#         return results["images_results"][0].get("thumbnail")  # or use "original" if you need the full-sized image
-#     return None
-
-# # Dictionary to store one image for each query
-# one_image_per_query = {}
-
-# # Fetch one image for each query
-# for query in search_queries:
-#     # print(f"Fetching image for: {query}")
-#     one_image_per_query[query] = fetch_image(query)
-
-# img_link=[]
-
-# # Print the collected image URLs
-# for query, image_url in one_image_per_query.items():
-#     if image_url:
-#         img_link.append(image_url)
-#         print(f"\nImage for query '{query}': {image_url}")
-#     else:
-#         print(f"\nNo image found for query '{query}'")
-
-# print(img_link)
-
-# from serpapi import GoogleSearch
-
-# def get_product_descriptions(api_key, product_names):
-#     product_descriptions = {}
-
-#     for product in product_names:
-#         search = GoogleSearch({
-#             "q": product,
-#             "tbm": "shop",
-#             "api_key": api_key
-#         })
-#         results = search.get_dict()
-
-#         if "shopping_results" in results:
-#             # Get the first result's description
-#             description = results['shopping_results'][0].get('description', 'No description found')
-#         else:
-#             description = "No results found"
-
-#         product_descriptions[product] = description
-
-#     return product_descriptions
-
-# # Replace with your actual SerpApi key
-# api_key = "YOUR_SERPAPI_API_KEY"
-
-# # List of product names
-# product_names = ["iPhone 14", "Samsung Galaxy S23", "Sony WH-1000XM5"]
-
-# descriptions = get_product_descriptions(api_key, product_names)
-
-# for product, description in descriptions.items():
-#     print(f"{product}: {description}")
-
-# from serpapi import GoogleSearch
-
-# def get_title(ite):
-#     params = {
-#     "engine": "walmart",
-#     "query": ite,
-#     "api_key": "f920b8404f9a0de2279ac3d8097f9c87af3b632cae57c969cd5043aa701a63c2"
-#     }
-
-#     search = GoogleSearch(params)
-#     results = search.get_dict()
-#     organic_results = results["organic_results"][2]["title"]
-#     return organic_results
-
-# item=["black shirt","red shirt"]
-
-# dis=[]
-
-# for i in item:
-#     dis.append(get_title(i))
-
-# for i in dis:
-#     print(i)
-
-
-# import requests
-
-# r = requests.get('https://serpapi.com/search.json?engine=google&q=Coffee', auth=('user', 'pass'))
-
-# file=r.json()
-# print(file)
-
-# import gspread
-
-# # Authenticate using the service account
-# client = gspread.service_account(filename="key.json")
-
-# # Open the spreadsheet by name
-# spreadsheet = client.open("Mini Project Contact Form")
-
-# # Select the first sheet (worksheet)
-# worksheet = spreadsheet.sheet1  # Or use .worksheet("Sheet1") if you know the sheet's name
-
-# # Define the three variables you want to write
-# var1 = "Value1"
-# var2 = "Value2"
-# var3 = "Value3"
-
-# # Find the next empty row
-# next_row = len(worksheet.get_all_values()) + 1
-
-# # Update the next row with the three variables
-# worksheet.update(f'A{next_row}:C{next_row}', [[var1, var2, var3]])
-
-# print(f"Values written to row {next_row}: {var1}, {var2}, {var3}")
-# app.py
-from flask import Flask, Response, render_template
+from flask import Flask, render_template, Response, redirect, url_for
 import cv2
+import os
 
 app = Flask(__name__)
 
-# Initialize the webcam
-camera = cv2.VideoCapture(0)  # 0 is the default camera
+# Global variable to store the detected face
+detected_face_name = None
+
+# Path to the directory containing reference images of people to track
+reference_images_dir = 'Gugs'
+
+# Load all reference images and their names
+reference_images = []
+reference_names = []
+
+for filename in os.listdir(reference_images_dir):
+    if filename.endswith(('.jpg', '.png', '.jpeg')):
+        image_path = os.path.join(reference_images_dir, filename)
+        image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+        image = cv2.resize(image, (100, 100))  # Resize for better performance
+        reference_images.append(image)
+        reference_names.append(os.path.splitext(filename)[0])
+
+# Create a Haar cascade for face detection
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
 def generate_frames():
-    while True:
-        # Capture frame-by-frame
-        success, frame = camera.read()
-        if not success:
-            break
-        else:
-            # Encode the frame in JPEG format
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
+    global detected_face_name
+    cap = cv2.VideoCapture(0)
+    
+    if not cap.isOpened():
+        print("Error: Could not open webcam.")
+        exit()
 
-            # Concatenate frame one by one and show result
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        faces = face_cascade.detectMultiScale(gray_frame, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+
+        for (x, y, w, h) in faces:
+            face_region = gray_frame[y:y+h, x:x+w]
+            best_match_name = "Unknown"
+            best_match_value = 0
+
+            for ref_image, name in zip(reference_images, reference_names):
+                face_region_resized = cv2.resize(face_region, (ref_image.shape[1], ref_image.shape[0]))
+                result = cv2.matchTemplate(face_region_resized, ref_image, cv2.TM_CCOEFF_NORMED)
+                _, max_val, _, _ = cv2.minMaxLoc(result)
+
+                if max_val > best_match_value:
+                    best_match_value = max_val
+                    best_match_name = name
+
+            # Set the face name based on the best match
+            face_name = best_match_name if best_match_value > 0.2 else "Unknown"
+            
+            # Update the global variable with the detected face name
+            detected_face_name = face_name
+            
+            # Draw a rectangle around the face and display the name
+            color = (0, 255, 0) if face_name != "Unknown" else (0, 0, 255)
+            cv2.rectangle(frame, (x, y), (x+w, y+h), color, 2)
+            cv2.putText(frame, face_name, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 255, 255), 2)
+
+        # Encode frame in JPEG format
+        ret, buffer = cv2.imencode('.jpg', frame)
+        frame = buffer.tobytes()
+
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+    cap.release()
 
 @app.route('/')
 def index():
@@ -158,10 +81,16 @@ def index():
 
 @app.route('/video_feed')
 def video_feed():
-    # Returns the generated frames as a video stream
-    return Response(generate_frames(),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+# Route to redirect after detecting a face
+@app.route('/detected_face')
+def detected_face():
+    global detected_face_name
+    if detected_face_name:
+        return render_template('detected_face.html', name=detected_face_name)
+    else:
+        return redirect(url_for('index'))
 
 if __name__ == "__main__":
     app.run(debug=True)
-

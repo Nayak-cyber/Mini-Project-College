@@ -9,10 +9,15 @@
                     <div class="video-container">
                         <img src="{{ url_for('face_recog') }}" alt="Video Feed" class="img-fluid border border-primary rounded shadow-lg">
                     </div>
+                    <div class="text-center mt-4">
+                        <!-- Custom Login Button -->
+                        <a href="{{url_for('admin_panel')}}" class="btn btn-primary btn-lg rounded-pill shadow-sm" style="background-color: #007bff; border: none; padding: 10px 40px;">
+                            Login with Face Recognition
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock adminlog %}
