@@ -115,3 +115,12 @@ if "blog" in dblist:
   print("The database exists.")
 
 print(x)
+
+li=[]
+
+for x in mycol.find():
+  li.append(x)
+  print(x)
+
+print(mycol.find())
+print(li[0]['title'])
