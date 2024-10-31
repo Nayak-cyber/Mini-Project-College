@@ -3,8 +3,15 @@ from serpapi import GoogleSearch
 import gspread
 import cv2
 import os
+import pymongo
 
 item=["Blue Shirt","Red Shirt","Black Pants","Watch"]
+
+myclient=pymongo.MongoClient("mongodb://localhost:27017/")
+
+mydb=myclient["orders"]
+
+mycol=mydb["order"]
 
 
 app = Flask(__name__)
@@ -241,6 +248,22 @@ def login():
        update_google_sheet(email,text,message)
        return redirect("/thanks")
     return render_template("contact.html")
+
+@app.route('/checkout/confirmation', methods=['POST'])
+def checkout_confirmation():
+    # Retrieve form data
+    name = request.form.get('name')
+    email = request.form.get('email')
+    address = request.form.get('address')
+    city = request.form.get('city')
+    zip_code = request.form.get('zip')
+    payment_method = request.form.get('payment_method')
+    mydict = { "name":name , "email":email,"address":address,"city":city,"zip_code":zip_code,"payment_method":payment_method }
+    x = mycol.insert_one(mydict)
+    print(f"{x} has been successfully done!!")
+    
+    # Pass data to confirmation page
+    return render_template('confirmation.html', name=name, email=email, address=address, city=city, zip=zip_code, payment_method=payment_method)
 
 @app.route("/thanks")
 def feed():
