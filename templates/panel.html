@@ -3,15 +3,28 @@
 {% block panel %}
 <div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-12 text-center mb-4">
+            <h1 class="card-title">Welcome to the Admin Panel</h1>
+            <p class="card-text">You have successfully logged in as an administrator.</p>
+            <p class="card-text">The below are the orders done by customers</p>
+        </div>
+        
+        <!-- Loop to display each user's details in a card -->
+        {% for item in li %}
+        <div class="col-md-4 mb-4">
             <div class="card shadow-lg">
-                <div class="card-body text-center">
-                    <h1 class="card-title mb-4">Welcome to the Admin Panel</h1>
-                    <p class="card-text">You have successfully logged in as an administrator.</p>
-                    <!--<a href="#" class="btn btn-primary btn-lg rounded-pill">Go to Dashboard</a>-->
+                <div class="card-body">
+                    <h4 class="card-title">{{ item.name }}</h4>
+                    <p class="card-text"><strong>Email:</strong> {{ item.email }}</p>
+                    <p class="card-text"><strong>Address:</strong> {{ item.address }}</p>
+                    <p class="card-text"><strong>City:</strong> {{ item.city }}</p>
+                    <p class="card-text"><strong>ZIP Code:</strong> {{ item.zip_code }}</p>
+                    <p class="card-text"><strong>Payment Method:</strong> {{ item.payment_method }}</p>
                 </div>
             </div>
         </div>
+        {% endfor %}
+        
     </div>
 </div>
 {% endblock panel %}

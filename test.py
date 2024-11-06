@@ -100,27 +100,38 @@ import pymongo
 
 myclient=pymongo.MongoClient("mongodb://localhost:27017/")
 
-mydb=myclient["blog"]
+mydb=myclient["orders"]
 
 print(myclient.list_database_names())
 
 dblist=myclient.list_database_names()
 
-mycol=mydb["post"]
+mycol=mydb["order"]
 
-mydict = { "name": "John", "address": "Highway 37" }
-x = mycol.insert_one(mydict)
+# mydict = { "name": "John", "address": "Highway 37" }
+# x = mycol.insert_one(mydict)
 
-if "blog" in dblist:
-  print("The database exists.")
+# if "blog" in dblist:
+#   print("The database exists.")
 
-print(x)
+# print(x)
 
 li=[]
 
 for x in mycol.find():
   li.append(x)
-  print(x)
+  # print(x)
 
-print(mycol.find())
-print(li[0]['title'])
+# print(mycol.find())
+# print(li[0]['name'])
+# print(li[1]['name'])
+# # for i in range(0,len(li)):
+# #   print(li[i]["title"])
+# print(type(li))
+# print(len(li))
+
+# for i in range(len(li)):
+#   print(li[i]["name"])
+# print(li)
+for i in range(0, len(li)):
+  print(li[i]["name"])
