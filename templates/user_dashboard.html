@@ -1,0 +1,26 @@
+{% extends "main.html" %}
+
+{%  block user_dashboard %}
+<div class="container">
+    <h2 class="text-center mt-4 mb-4">My Orders</h2>
+    
+    {% if orders %}
+        <ul class="list-group">
+            {% for order in orders %}
+                <li class="list-group-item">
+                    <strong>Order ID:</strong> {{ order['_id'] }}<br>
+                    <strong>Item:</strong> {{ order['order_item'] }}<br>
+                    <strong>Date:</strong> {{ order['date'] }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-center mt-4">You have no orders yet.</p>
+    {% endif %}
+    
+    <!-- Return to Home Button -->
+    <div class="mt-4 text-center">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Return to Home</a>
+    </div>
+</div>
+{% endblock %}

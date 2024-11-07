@@ -131,6 +131,8 @@ web_name="Shopsmart"
 
 dis=[]
 
+order_item=""
+
 
 
 def get_title(ite):
@@ -238,6 +240,8 @@ def face_recog():
 
 @app.route("/checkout/<product>/")
 def checkout(product):
+    global order_item
+    order_item=product
     return render_template("checkout.html",product=product)
 
 
@@ -256,6 +260,8 @@ def login():
 
 @app.route('/checkout/confirmation', methods=['POST'])
 def checkout_confirmation():
+    global order_item  # Ensure order_item is set globally before this function is called
+    print(order_item)
     global li
     name = request.form.get('name')
     email = request.form.get('email')
@@ -263,20 +269,32 @@ def checkout_confirmation():
     city = request.form.get('city')
     zip_code = request.form.get('zip')
     payment_method = request.form.get('payment_method')
-    
+    password = request.form.get('password')  # New password field
+
+    # Check if email already exists in the MongoDB collection
+    existing_user = mycol.find_one({"email": email})
+    if existing_user:
+        # If email exists, check if password matches
+        if existing_user['password'] != password:
+            return render_template('password_mismatch.html')  # Password mismatch error page
+
+    # Include order_item in the data to be saved
     mydict = {
         "name": name,
         "email": email,
         "address": address,
         "city": city,
         "zip_code": zip_code,
-        "payment_method": payment_method
+        "payment_method": payment_method,
+        "password": password,  # Store password (consider hashing for security)
+        "order_item": order_item  # Add the order item
     }
-    
+
     x = mycol.insert_one(mydict)
     li.append(mydict)
     print(f"Order ID: {x.inserted_id} has been successfully placed!")
 
+    # Pass order_item to the template
     return render_template(
         'confirmation.html', 
         name=name, 
@@ -284,8 +302,33 @@ def checkout_confirmation():
         address=address, 
         city=city, 
         zip=zip_code, 
-        payment_method=payment_method
+        payment_method=payment_method,
+        order_item=order_item  # Add order item to the template
     )
+
+
+
+@app.route('/userlogin', methods=['GET', 'POST'])
+def userlogin():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        
+        # Check if the email and password match a record in MongoDB
+        user = mycol.find_one({"email": email, "password": password})
+        
+        if user:
+            # Fetch orders for the logged-in user
+            orders = mycol.find({"email": email})
+            return render_template('user_dashboard.html', orders=orders, user=user)
+        else:
+            error = "Invalid email or password. Please try again."
+            return render_template('userlogin.html', error=error)
+    
+    # Render login page for GET request
+    return render_template('userlogin.html')
+
+
 
 @app.route("/thanks")
 def feed():

@@ -1,0 +1,37 @@
+{% extends "main.html" %}
+
+{% block user_login %}
+<div class="container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
+        <h2 class="text-center mb-4">User Login</h2>
+        
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
+        
+        <form action="{{ url_for('userlogin') }}" method="POST">
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Enter email" required>
+            </div>
+            
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Enter password" required>
+            </div>
+            
+            <!-- Login Button -->
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+        
+        <!-- Link to Sign Up -->
+        <div class="text-center mt-3">
+            <p>Don't have an account? <a href="{{ url_for('index') }}">Sign up here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
